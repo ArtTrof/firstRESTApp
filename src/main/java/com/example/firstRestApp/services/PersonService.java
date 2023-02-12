@@ -3,6 +3,7 @@ package com.example.firstRestApp.services;
 
 import com.example.firstRestApp.models.Person;
 import com.example.firstRestApp.repositories.PersonRepository;
+import com.example.firstRestApp.util.PersonNotFoundException;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,10 @@ public class PersonService {
 
     public Person findOne(int id) {
         Optional<Person> person = personRepository.findById(id);
-        return person.orElse(null);
+        return person.orElseThrow(PersonNotFoundException::new);
+    }
+    @Transactional
+    public void save(Person person){
+        personRepository.save(person);
     }
 }
